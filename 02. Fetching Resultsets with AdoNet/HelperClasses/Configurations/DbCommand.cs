@@ -45,18 +45,24 @@
         public const string SelectTownId = "SELECT Id FROM Towns WHERE Name = @townName";
 
         // 05. Change Town Names Casing
-        public const string ChangeTownName = "UPDATE Towns SET Name = UPPER(Name) WHERE CountryCode = (SELECT c.Id FROM Countries AS c WHERE c.Name = @countryName) SELECT t.Name FROM Towns as t JOIN Countries AS c ON c.Id = t.CountryCode WHERE c.Name = @countryName";
+        public const string ChangeTownName = "UPDATE Towns SET Name = UPPER(Name) WHERE CountryCode = (SELECT c.Id FROM Countries AS c WHERE c.Name = @countryName)";
+        public const string SelectTownsByCountry = "SELECT t.Name FROM Towns as t JOIN Countries AS c ON c.Id = t.CountryCode WHERE c.Name = @countryName";
 
         // 06. *Remove Villain 
-        public const string RemoveVillain = "SELECT Name FROM Villains WHERE Id = @villainId DELETE FROM MinionsVillains WHERE VillainId = @villainId DELETE FROM Villains WHERE Id = @villainId";
+        public const string SelectVillainById = "SELECT Name FROM Villains WHERE Id = @villainId";
+        public const string DeleteMinionVllainById = "DELETE FROM MinionsVillains WHERE VillainId = @villainId";
+        public const string DeleteVillainById = "DELETE FROM Villains WHERE Id = @villainId";
 
         // 07. Print All Minion Names
         public const string PrintAllNames = "SELECT Name FROM Minions";
 
         // 08. Increase Minion Age
-        public const string IncreaseAge = "UPDATE Minions SET Name = UPPER(LEFT(Name, 1)) + SUBSTRING(Name, 2, LEN(Name)), Age += 1 WHERE Id = @Id SELECT Name, Age FROM Minions";
+        public const string MinionIncreaseAge = "UPDATE Minions SET Name = UPPER(LEFT(Name, 1)) + SUBSTRING(Name, 2, LEN(Name)), Age += 1 WHERE Id = @Id SELECT Name, Age FROM Minions";
+        public const string SelectMinionNameAge = "SELECT Name, Age FROM Minions";
 
         // 09. Increase Age Stored Procedure 
-        public const string IncreaseAgeStoredProcedure = "GO CREATE PROC usp_GetOlder @id INT AS UPDATE Minions SET Age += 1 WHERE Id = @id SELECT Name, Age FROM Minions WHERE Id = @Id";
+        public const string IncreaseAgeStoredProcedure = "GO CREATE PROC usp_GetOlder @id INT AS UPDATE Minions SET Age += 1 WHERE Id = @id";
+        public const string ExecuteIncreaseAgeProcedure = "EXEC usp_GetOlder @id";
+        public const string SelectMinionNameAgeById = "SELECT Name, Age FROM Minions WHERE Id = @Id";
     }
 }
