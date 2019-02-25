@@ -1,6 +1,6 @@
 ﻿namespace IncreaseMinionAge
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -12,20 +12,21 @@
         {
             int[] ids = Console.ReadLine().Split().Select(int.Parse).ToArray();
             List<Tuple<string, int>> minions = new List<Tuple<string, int>>();
+            string[] sqlVariables;
+            dynamic[] entityData;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
 
                     for (int i = 0; i < ids.Length; i++)
                     {
-                        using (SqlCommand command = new SqlCommand(DbCommand.MinionIncreaseAge, connection))
-                        {
-                            command.Parameters.AddWithValue("@Id", ids[i]);
-                            command.ExecuteNonQuery();
-                        }
+                        sqlVariables = new string[] { "@Id" };
+                        entityData = new dynamic[] { ids[i] };
+
+                        Service<int>.ExecNonQuery(connection, DbCommand.MinionIncreaseAge, sqlVariables, entityData);   
                     }
 
                     using (SqlCommand command = new SqlCommand(DbCommand.SelectMinionNameAge, connection))

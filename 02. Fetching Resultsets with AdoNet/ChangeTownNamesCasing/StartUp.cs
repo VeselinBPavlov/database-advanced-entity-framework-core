@@ -1,6 +1,6 @@
 ﻿namespace ChangeTownNamesCasing
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -12,19 +12,18 @@
             string country = Console.ReadLine();
             int rowsAffected = 0;
             IList<string> towns = new List<string>();
+            string[] sqlVariables;
+            dynamic[] entityData;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
+                    sqlVariables = new string[] { "@countryName" };
+                    entityData = new dynamic[] { country };
 
-                    using (SqlCommand command = new SqlCommand(DbCommand.ChangeTownName, connection))
-                    {
-                        command.Parameters.AddWithValue("@countryName", country);
-                        rowsAffected = command.ExecuteNonQuery();
-                        
-                    }
+                    rowsAffected = Service<int>.ExecNonQuery(connection, DbCommand.ChangeTownName, sqlVariables, entityData);
 
                     using (SqlCommand command = new SqlCommand(DbCommand.SelectTownsByCountry, connection))
                     {

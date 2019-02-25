@@ -1,6 +1,6 @@
 ﻿namespace InitialSetup
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Data.SqlClient;
 
@@ -14,28 +14,28 @@
             // DB operations.
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationStringBeforeCreateDB))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionStringBeforeCreateDB))
                 {
                     // Create database.
                     connection.Open();
-                    ExecNonQuery(connection, DbCommand.InitialSetupCreateDB);
+                    Service<int>.ExecNonQuery(connection, DbCommand.InitialSetupCreateDB, null, null);
                     Console.WriteLine(Util.DBCreateSuccess);                    
                 }
 
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
                     // Create tables.
                     foreach (var sqlCommand in dbCommand.InitialSetupCreateTables)
                     {
-                        ExecNonQuery(connection, sqlCommand);
+                        Service<int>.ExecNonQuery(connection, sqlCommand, null, null);
                         Console.WriteLine(Util.TableCreateSuccess);
                     }
 
                     // Insert statements.
                     foreach (var sqlCommand in dbCommand.InitialSetupInsert)
                     {
-                        ExecNonQuery(connection, sqlCommand);
+                        Service<int>.ExecNonQuery(connection, sqlCommand, null, null);
                         Console.WriteLine(Util.InsertStatementSuccess);
                     }
                 }
@@ -45,14 +45,6 @@
             {
                 Console.WriteLine(e.Message);
             }            
-        }
-
-        private static void ExecNonQuery(SqlConnection connection, string sqlCommand)
-        {
-            using (SqlCommand command = new SqlCommand(sqlCommand, connection))
-            {
-                command.ExecuteNonQuery();
-            }
         }
     }
 }

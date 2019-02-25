@@ -1,6 +1,6 @@
 ﻿namespace VillainNames
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -9,12 +9,12 @@
     {
         public static void Main()
         {
-            Dictionary<string, int> villains = new Dictionary<string, int>();
+            List<Tuple<string, int>> villains = new List<Tuple<string, int>>();
 
             // DB operations.
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
 
@@ -24,7 +24,7 @@
                         {
                             while (reader.Read())
                             {
-                                villains.Add((string)reader["Name"], (int)reader["MinionsCount"]);
+                                villains.Add(new Tuple<string, int>((string)reader["Name"], (int)reader["MinionsCount"]));
                                 Console.WriteLine(Util.ReadingDataSuccess);
                             }
                         }
@@ -39,7 +39,7 @@
             // Print.
             foreach (var villain in villains)
             {
-                Console.WriteLine($"{villain.Key} - {villain.Value}");
+                Console.WriteLine($"{villain.Item1} - {villain.Item2}");
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace RemoveVillain
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Data.SqlClient;
 
@@ -11,36 +11,28 @@
             int villainId = int.Parse(Console.ReadLine());
             string villainName = string.Empty;
             int releasedMinions = 0;
+            string[] sqlVariables;
+            dynamic[] entityData;
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
+                                       
+                    villainName = Service<string>.GetEntityProp(villainId, connection, "@villainId", DbCommand.SelectVillainById);
 
-                    using (SqlCommand command = new SqlCommand(DbCommand.SelectVillainById, connection))
+                    if (villainName == null)
                     {
-                        command.Parameters.AddWithValue("@villainId", villainId);
-                        villainName = (string)command.ExecuteScalar();
-
-                        if (villainName == null)
-                        {
-                            Console.WriteLine(Util.NoViillainFound);
-                            return;
-                        }
+                        Console.WriteLine(Util.NoViillainFound);
+                        return;
                     }
 
-                    using (SqlCommand command = new SqlCommand(DbCommand.DeleteMinionVllainById, connection))
-                    {
-                        command.Parameters.AddWithValue("@villainId", villainId);
-                        releasedMinions = command.ExecuteNonQuery();
-                    }
+                    sqlVariables = new string[] { "@villainId" };
+                    entityData = new dynamic[] { villainId };
 
-                    using (SqlCommand command = new SqlCommand(DbCommand.DeleteVillainById, connection))
-                    {
-                        command.Parameters.AddWithValue("@villainId", villainId);
-                        command.ExecuteNonQuery();
-                    }
+                    releasedMinions = Service<int>.ExecNonQuery(connection, DbCommand.DeleteMinionVllainById, sqlVariables, entityData);
+                    Service<int>.ExecNonQuery(connection, DbCommand.DeleteVillainById, sqlVariables, entityData);
                 }
             }
             catch (Exception e)

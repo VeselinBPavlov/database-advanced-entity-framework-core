@@ -1,4 +1,4 @@
-﻿namespace HelperClasses.Configurations
+﻿namespace HelperClasses
 {
     public static class Util
     {

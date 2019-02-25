@@ -2,7 +2,7 @@
 {
     using System;
     using System.Data.SqlClient;
-    using HelperClasses.Configurations;
+    using HelperClasses;
 
     public class StartUp
     {
@@ -11,7 +11,7 @@
             int id = int.Parse(Console.ReadLine());
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
 

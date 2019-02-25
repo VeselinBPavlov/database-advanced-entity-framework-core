@@ -1,6 +1,6 @@
 ﻿namespace MinionNames
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -17,20 +17,16 @@
             // DB operations.
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand(DbCommand.MinionNamesVillainName, connection))
-                    {
-                        command.Parameters.AddWithValue("@id", id);
-                        villainName = (string)command.ExecuteScalar();
+                    villainName = Service<string>.GetEntityProp(id, connection, "@id", DbCommand.MinionNamesVillainName);
 
-                        if (villainName == null)
-                        {
-                            Console.WriteLine($"No villain with ID {id} exists in the database.");
-                            return;
-                        }
+                    if (villainName == null)
+                    {
+                        Console.WriteLine($"No villain with ID {id} exists in the database.");
+                        return;
                     }
 
                     using (SqlCommand command = new SqlCommand(DbCommand.MinionNames, connection))

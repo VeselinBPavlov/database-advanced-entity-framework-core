@@ -1,6 +1,6 @@
 ﻿namespace PrintAllMinionName
 {
-    using HelperClasses.Configurations;
+    using HelperClasses;
     using System;
     using System.Collections.Generic;
     using System.Data.SqlClient;
@@ -13,7 +13,7 @@
 
             try
             {
-                using (SqlConnection connection = new SqlConnection(Configuration.ConfigurationString))
+                using (SqlConnection connection = new SqlConnection(Configuration.ConnectionString))
                 {
                     connection.Open();
 
