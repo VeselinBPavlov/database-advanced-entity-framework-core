@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P03_FootballBetting.Client", "FootballBetting.Client\P03_FootballBetting.Client.csproj", "{3137F750-8CDD-4826-AFF2-3222F18F26CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P03_FootballBetting.Client", "FootballBetting.Client\P03_FootballBetting.Client.csproj", "{3137F750-8CDD-4826-AFF2-3222F18F26CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P03_FootballBetting.Data", "FootballBetting.Data\P03_FootballBetting.Data.csproj", "{C89C14E2-A6F5-4584-9ED6-3C616BEB8F6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P03_FootballBetting.Data", "FootballBetting.Data\P03_FootballBetting.Data.csproj", "{C89C14E2-A6F5-4584-9ED6-3C616BEB8F6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P03_FootballBetting.Data.Models", "FootballBetting.Data.Models\P03_FootballBetting.Data.Models.csproj", "{0F213096-7E45-4907-9BCB-7BF491BC68E4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P03_FootballBetting.Data.Models", "FootballBetting.Data.Models\P03_FootballBetting.Data.Models.csproj", "{0F213096-7E45-4907-9BCB-7BF491BC68E4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

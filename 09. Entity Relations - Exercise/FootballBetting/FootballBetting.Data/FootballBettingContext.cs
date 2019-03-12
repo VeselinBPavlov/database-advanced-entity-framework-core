@@ -37,11 +37,9 @@
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);
-
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(Configuration.SqlConnectionStr);
+                optionsBuilder.UseSqlServer(Configuration.ConnectionString);
             }
         }
 
