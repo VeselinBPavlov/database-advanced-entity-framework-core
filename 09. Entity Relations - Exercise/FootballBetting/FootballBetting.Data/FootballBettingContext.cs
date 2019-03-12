@@ -33,11 +33,16 @@
         public FootballBettingContext(DbContextOptions options)
             : base(options)
         {
-        }       
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(Configuration.ConnectionString);
+            base.OnConfiguring(optionsBuilder);
+
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(Configuration.SqlConnectionStr);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
