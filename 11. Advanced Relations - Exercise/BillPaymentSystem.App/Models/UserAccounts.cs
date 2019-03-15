@@ -1,7 +1,7 @@
-﻿using BillPaymentSystem.Models;
-
-namespace BillPaymentSystem.App.Models
+﻿namespace BillPaymentSystem.App.Models
 {
+    using BillPaymentSystem.Models;
+
     public class UserAccounts
     {
         public string Name { get; set; }

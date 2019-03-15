@@ -2,8 +2,8 @@
 {
     using System.Linq;
 
+    using Contracts;
     using BillPaymentSystem.App.Core.Attributes;
-    using BillPaymentSystem.App.Core.Services.Contracts;
     using BillPaymentSystem.App.Models;
     using BillPaymentSystem.Data;
     using BillPaymentSystem.Models;

@@ -1,9 +1,10 @@
 ﻿namespace BillPaymentSystem.App.Core.Commands
 {
-    using BillPaymentSystem.App.Core.Attributes;
-    using BillPaymentSystem.App.Core.Services.Contracts;
     using System.Linq;
     using System.Text;
+
+    using BillPaymentSystem.App.Core.Attributes;
+    using BillPaymentSystem.App.Core.Services.Contracts;
 
     public class PayBillsCommand : Command
     {
@@ -54,7 +55,7 @@
                 else
                 {
                     this.BankService.Withdraw(bankAccount, null, amount);
-                    sb.AppendLine($"The bills are paid up to bank account number {bankAccount.BankAccountId}!");
+                    sb.AppendLine($"The bills are paid successfull!");
 
                     return sb.ToString().TrimEnd();
                 }
@@ -71,7 +72,7 @@
                 else
                 {
                     this.BankService.Withdraw(null, creditCard, amount);
-                    sb.AppendLine($"The bills are paid up to credit card number {creditCard.CreditCardId}!");
+                    sb.AppendLine($"The bills are paid successfull!");
 
                     return sb.ToString().TrimEnd();
                 }
