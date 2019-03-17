@@ -1,10 +1,12 @@
 ﻿namespace BookShop
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using BookShop.Models.Enums;
     using Data;
     using Initializer;
+    using Microsoft.EntityFrameworkCore;
 
     public class StartUp
     {
@@ -17,103 +19,186 @@
 
                 //01. Age Restriction
                 //string command = Console.ReadLine().ToLower();
-                //var result = GetBooksByAgeRestriction(db, command);
+                //string result = GetBooksByAgeRestriction(db, command);
 
                 //02. GoldenBooks.
-                //var result = GetGoldenBooks(db);
+                //string result = GetGoldenBooks(db);
 
                 //03. Books by Price
-                //var result = GetBooksByPrice(db);
+                //string result = GetBooksByPrice(db);
 
                 //04. Not Released In
                 //int year = int.Parse(Console.ReadLine());
-                //var result = GetBooksNotReleasedIn(db, year);
+                //string result = GetBooksNotReleasedIn(db, year);
 
                 //05. Book Titles by Category 
-                string input = Console.ReadLine();
-                var result = GetBooksByCategory(db, input);
+                //string input = Console.ReadLine();
+                //string result = GetBooksByCategory(db, input);
 
+                //06. Released Before Date 
+                //string date = Console.ReadLine();
+                //string result = GetBooksReleasedBefore(db, date);
+
+                //07. Author Search 
+                //string input = Console.ReadLine();
+                //string result = GetAuthorNamesEndingIn(db, input);
+
+                //08. Book Search
+                //string input = Console.ReadLine();
+                //string result = GetBookTitlesContaining(db, input);
+
+                //09. Book Search by Author 
+                //string input = Console.ReadLine();
+                //string result = GetBooksByAuthor(db, input);
+
+                //10. Count Books 
+                //int lengthCheck = int.Parse(Console.ReadLine());
+                //int result = CountBooks(db, lengthCheck);
+
+                //11. Total Book Copies 
+                string result = CountCopiesByAuthor(db);
 
                 Console.WriteLine(result);
             }
         }
 
-        public static string GetBooksByCategory(BookShopContext context, string input)
+        public static string CountCopiesByAuthor(BookShopContext context)
         {
-            var categories = input.Split(" ", StringSplitOptions.RemoveEmptyEntries)
-                .Select(c => c.ToLower())
-                .ToArray();
-
-            var books = context.Books
-                .Where(b => b.BookCategories.Any(c => categories.Contains(c.Category.Name.ToLower())))
-                .Select(b => b.Title)
-                .OrderBy(t => t)
-                .ToList();
-
-            var result = string.Join(Environment.NewLine, books);
-
-            return result;
+            var result = context.Authors
+                .GroupBy(a => a.Books)
+                .Select(a => $"{a.FirstName} {a.LastName} - {Sum}")
         }
 
-        public static string GetBooksNotReleasedIn(BookShopContext context, int year)
-        {
-            var books = context.Books
-                .Where(b => b.ReleaseDate.Value.Year != year)
-                .OrderBy(b => b.BookId)
-                .Select(b => b.Title)
-                .ToList();
+        //public static int CountBooks(BookShopContext context, int lengthCheck)
+        //{
+        //    var result = context.Books
+        //        .Where(b => b.Title.Length > lengthCheck)
+        //        .Count();
 
-            var result = string.Join(Environment.NewLine, books);
+        //    return result;
+        //}
 
-            return result;
-        }
+        //public static string GetBooksByAuthor(BookShopContext context, string input)
+        //{
+        //    var books = context.Books
+        //        .Where(b => EF.Functions.Like(b.Author.LastName, $"{input.ToLower()}%"))
+        //        .OrderBy(b => b.BookId)
+        //        .Select(b => $"{b.Title} ({b.Author.FirstName} {b.Author.LastName})")
+        //        .ToList();
+
+        //    var result = string.Join(Environment.NewLine, books);
+
+        //    return result;
+        //}
+
+        //public static string GetBookTitlesContaining(BookShopContext context, string input)
+        //{
+        //    var books = context.Books
+        //        .Where(b => EF.Functions.Like(b.Title, $"%{input.ToLower()}%"))
+        //        .OrderBy(b => b.Title)
+        //        .Select(b => b.Title)
+        //        .ToList();
+
+        //    var result = string.Join(Environment.NewLine, books);
+
+        //    return result;
+        //}
+
+        //public static string GetAuthorNamesEndingIn(BookShopContext context, string input)
+        //{
+        //    var authors = context.Authors
+        //        .Where(a => EF.Functions.Like(a.FirstName, $"%{input}"))
+        //        .OrderBy(a => a.FirstName)
+        //        .ThenBy(a => a.LastName)
+        //        .Select(a => $"{a.FirstName} {a.LastName}")
+        //        .ToList();
+
+        //    var result = string.Join(Environment.NewLine, authors);
+
+        //    return result;
+        //}
+
+        //public static string GetBooksReleasedBefore(BookShopContext context, string date)
+        //{
+        //    var books = context.Books
+        //        .Where(b => b.ReleaseDate < DateTime.ParseExact(date, "dd-MM-yyyy", CultureInfo.InvariantCulture))
+        //        .OrderByDescending(b => b.ReleaseDate)
+        //        .Select(b => $"{b.Title} - {b.EditionType} - ${b.Price:f2}")
+        //        .ToList();
+
+        //    var result = string.Join(Environment.NewLine, books);
+
+        //    return result;
+        //}
+
+        //public static string GetBooksByCategory(BookShopContext context, string input)
+        //{
+        //    var categories = input.Split(" ", StringSplitOptions.RemoveEmptyEntries)
+        //        .Select(c => c.ToLower())
+        //        .ToArray();
+
+        //    var books = context.Books
+        //        .Where(b => b.BookCategories.Any(c => categories.Contains(c.Category.Name.ToLower())))
+        //        .Select(b => b.Title)
+        //        .OrderBy(t => t)
+        //        .ToList();
+
+        //    var result = string.Join(Environment.NewLine, books);
+
+        //    return result;
+        //}
+
+        //public static string GetBooksNotReleasedIn(BookShopContext context, int year)
+        //{
+        //    var books = context.Books
+        //        .Where(b => b.ReleaseDate.Value.Year != year)
+        //        .OrderBy(b => b.BookId)
+        //        .Select(b => b.Title)
+        //        .ToList();
+
+        //    var result = string.Join(Environment.NewLine, books);
+
+        //    return result;
+        //}
 
         public static string GetBooksByPrice(BookShopContext context)
         {
-            var books = context.Books
-                .Where(b => b.Price > 40)
-                .OrderByDescending(b => b.Price)
-                .Select(b => $"{b.Title} - ${b.Price:f2}")
-                .ToList();
-
-            var result = string.Join(Environment.NewLine, books);
-
-            return result;
+            
         }
 
-        public static string GetGoldenBooks(BookShopContext context)
-        {
-            var books = context.Books
-                .Where(b => b.EditionType == EditionType.Gold && b.Copies < 5000)
-                .OrderBy(b => b.BookId)
-                .Select(b => b.Title)                
-                .ToList();
+        //public static string GetGoldenBooks(BookShopContext context)
+        //{
+        //    var books = context.Books
+        //        .Where(b => b.EditionType == EditionType.Gold && b.Copies < 5000)
+        //        .OrderBy(b => b.BookId)
+        //        .Select(b => b.Title)                
+        //        .ToList();
 
-            var result = string.Join(Environment.NewLine, books);
+        //    var result = string.Join(Environment.NewLine, books);
 
-            return result;
-        }
+        //    return result;
+        //}
 
-        public static string GetBooksByAgeRestriction(BookShopContext context, string command)
-        {
-            int ageRestriction = -1;
+        //public static string GetBooksByAgeRestriction(BookShopContext context, string command)
+        //{
+        //    int ageRestriction = -1;
 
-            switch (command.ToLower())
-            {
-                case "minor": ageRestriction = 0; break;
-                case "teen": ageRestriction = 1; break;
-                case "adult": ageRestriction = 2; break;
-            }
+        //    switch (command.ToLower())
+        //    {
+        //        case "minor": ageRestriction = 0; break;
+        //        case "teen": ageRestriction = 1; break;
+        //        case "adult": ageRestriction = 2; break;
+        //    }
 
-            var books = context.Books
-                .Where(b => (int)b.AgeRestriction == ageRestriction)
-                .Select(b => b.Title)
-                .OrderBy(b => b)
-                .ToList();
+        //    var books = context.Books
+        //        .Where(b => (int)b.AgeRestriction == ageRestriction)
+        //        .Select(b => b.Title)
+        //        .OrderBy(b => b)
+        //        .ToList();
 
-            var result = string.Join(Environment.NewLine, books);
+        //    var result = string.Join(Environment.NewLine, books);
 
-            return result;
-        }
+        //    return result;
+        //}
     }
 }
