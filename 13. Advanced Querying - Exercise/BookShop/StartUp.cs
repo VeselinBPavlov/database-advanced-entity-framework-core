@@ -9,6 +9,8 @@
     using Models.Enums;
     using Data;
     using Initializer;
+    using Z.EntityFramework.Plus;
+    using BookShop.Models;
 
     public class StartUp
     {
@@ -16,64 +18,138 @@
         {
             using (var db = new BookShopContext())
             {
-                //For first start - change connection string and start it.
+                // For first start and reset - change connection string and start database initializer.
                 //DbInitializer.ResetDatabase(db);
 
-                //01. Age Restriction
+                // 01. Age Restriction
                 //string command = Console.ReadLine().ToLower();
                 //string result = GetBooksByAgeRestriction(db, command);
 
-                //02. GoldenBooks.
+                // 02. GoldenBooks.
                 //string result = GetGoldenBooks(db);
 
                 //03. Books by Price
                 //string result = GetBooksByPrice(db);
 
-                //04. Not Released In
+                // 04. Not Released In
                 //int year = int.Parse(Console.ReadLine());
                 //string result = GetBooksNotReleasedIn(db, year);
 
-                //05. Book Titles by Category 
+                // 05. Book Titles by Category 
                 //string input = Console.ReadLine();
                 //string result = GetBooksByCategory(db, input);
 
-                //06. Released Before Date 
+                // 06. Released Before Date 
                 //string date = Console.ReadLine();
                 //string result = GetBooksReleasedBefore(db, date);
 
-                //07. Author Search 
+                // 07. Author Search 
                 //string input = Console.ReadLine();
                 //string result = GetAuthorNamesEndingIn(db, input);
 
-                //08. Book Search
+                // 08. Book Search
                 //string input = Console.ReadLine();
                 //string result = GetBookTitlesContaining(db, input);
 
-                //09. Book Search by Author 
+                // 09. Book Search by Author 
                 //string input = Console.ReadLine();
                 //string result = GetBooksByAuthor(db, input);
 
-                //10. Count Books 
+                // 10. Count Books 
                 //int lengthCheck = int.Parse(Console.ReadLine());
                 //int result = CountBooks(db, lengthCheck);
 
-                //11. Total Book Copies 
+                // 11. Total Book Copies 
                 //string result = CountCopiesByAuthor(db);
 
-                //12. Profit by Category 
+                // 12. Profit by Category 
                 //string result = GetTotalProfitByCategory(db);
 
-                //13. Most Recent Books 
+                // 13. Most Recent Books 
                 //string result = GetMostRecentBooks(db);
 
-                //14. Increase Prices
+                // 14. Increase Prices
                 //IncreasePrices(db);
 
-                //15.Remove Books
+                // 15.Remove Books
                 //int result = RemoveBooks(db);
+
+
+                // Bonus Tasks.
+                // Use Z.EntityFramework.Plus.EFCore library for bulk operations
+
+                // 16. Increase Prices Bulk
+                //IncreasePricesBulk(db);
+
+                // 17. Remove Books Bulk
+                //int result = RemoveBooksBulk(db);
+
+                // 18. Take author with all of his books and categories.
+                //string result = GetAllAuthorsWithBooksAndCategories(db);
+
+                // For use Lazy Loading use Microsoft.EntityFrameworkCore.Proxies library.
+                // Make all dbSets, collections and navigation properties virtual.
+                // Add .UseLazyLoadingProxies() in OnConfiguring method in our context.
+                //string result = GetAllBooksWithCategories(db);
 
                 //Console.WriteLine(result);
             }
+        }
+
+        public static string GetAllBooksWithCategories(BookShopContext context)
+        {
+            var books = context.Books
+                .SelectMany(x => x.BookCategories.Select(c => new
+                {
+                    c.Book.Title,
+                    c.Category.Name
+                }))
+                .OrderBy(x => x.Title)
+                .ToList();
+
+            var result = string.Join(Environment.NewLine, books.Select(b => $"{b.Title} - {b.Name}"));
+
+            return result;
+        }
+
+        public static string GetAllAuthorsWithBooksAndCategories(BookShopContext context)
+        {
+            var authors = context.Authors
+                .Select(x => new
+                {
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    // With SelectMany we can take nested collection data.
+                    Books = x.Books.SelectMany(b => b.BookCategories.Select(c => new
+                    {
+                        c.Book.Title,
+                        c.Category.Name
+                    }))
+                })
+                .OrderBy(a => a.FirstName)
+                .ThenBy(a => a.LastName)
+                .ToList();
+
+            var result = string.Join(Environment.NewLine, authors
+                .Select(a => $"{a.FirstName} {a.LastName}{Environment.NewLine}{string.Join(Environment.NewLine, a.Books.Select(x => $"-- {x.Title} / {x.Name}"))}"));
+
+            return result;
+        }
+
+        public static int RemoveBooksBulk(BookShopContext context)
+        {
+            var books = context.Books
+                .Where(b => b.Copies < 4200)
+                .Delete();            
+
+            return books;
+        }
+
+        public static void IncreasePricesBulk(BookShopContext context)
+        {
+            var books = context.Books
+                .Where(b => b.ReleaseDate.Value.Year < 2010)
+                .Update(x => new Book() { Price = x.Price + 5 });
         }
 
         public static int RemoveBooks(BookShopContext context)
