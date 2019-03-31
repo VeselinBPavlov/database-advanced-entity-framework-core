@@ -32,7 +32,7 @@
 				.Build();
 
 			serviceCollection.AddDbContext<PhotoShareContext>(options =>
-				options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+				options.UseSqlServer(configuration.GetConnectionString("HomeConnection")));
 
 			serviceCollection.AddAutoMapper(cfg => cfg.AddProfile<PhotoShareProfile>());
 

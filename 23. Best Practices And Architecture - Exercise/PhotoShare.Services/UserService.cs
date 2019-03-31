@@ -7,6 +7,7 @@
 
     using Contracts;
     using Data;
+    using Microsoft.EntityFrameworkCore;
     using Models;
 
     public class UserService : IUserService
@@ -107,6 +108,6 @@
         }
 
         private IEnumerable<TModel> By<TModel>(Func<User, bool> predicate)
-            => this.context.Users.Where(predicate).AsQueryable().ProjectTo<TModel>();
+            => this.context.Users.Include(x => x.FriendsAdded).Where(predicate).AsQueryable().ProjectTo<TModel>();
     }
 }

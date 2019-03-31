@@ -27,7 +27,7 @@
 
             if (type == null)
             {
-                throw new InvalidOperationException("Invalid command!");
+                throw new InvalidOperationException($"Command {input[0]} not valid!");
             }
 
             var constructor = type.GetConstructors()
