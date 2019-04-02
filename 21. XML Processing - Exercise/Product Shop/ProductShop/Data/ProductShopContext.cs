@@ -24,7 +24,7 @@
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=.;Database=ProductShop;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\MyInstance;AttachDbFilename=D:\Courses\Data\ProductShop_Data.mdf;Database=ProductShop;Integrated Security=true;");
             }
         }
 

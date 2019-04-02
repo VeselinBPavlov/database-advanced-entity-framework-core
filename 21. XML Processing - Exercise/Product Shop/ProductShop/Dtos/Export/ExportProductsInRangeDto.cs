@@ -1,9 +1,9 @@
-﻿namespace ProductShop.Dtos.Import
+﻿namespace ProductShop.Dtos.Export
 {
     using System.Xml.Serialization;
 
     [XmlType("Product")]
-    public class ImportProductDto
+    public class ExportProductsInRangeDto
     {
         [XmlElement("name")]
         public string Name { get; set; }
@@ -11,10 +11,7 @@
         [XmlElement("price")]
         public decimal Price { get; set; }
 
-        [XmlElement("sellerId")]
-        public int SellerId { get; set; }
-
-        [XmlElement("buyerId")]
-        public int? BuyerId { get; set; }
+        [XmlElement("buyer")]
+        public string Buyer { get; set; }
     }
 }
