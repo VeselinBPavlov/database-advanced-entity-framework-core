@@ -3,7 +3,6 @@
 [logo]: http://innovationstarterbox.bg/wp-content/uploads/2016/05/Softuni_logo_trasparent.png "Logo Title Text 2"
 
 ---
-We will look in details at working with a modern ORM technology: Entity Framework (EF), which is a ORM standard in C # and .NET applications. EF allows mapping between a relational base and object-oriented model using the "database first" and "code first" approaches and provides a powerful object-oriented API for querying the database and performing CRUD operations. We will demonstrate established practices in building a database layer on sophisticated systems using the "Repository" and "Unit of Work" templates.
 
 # Course: Database Advanced – Entity Framework Core
 
