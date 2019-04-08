@@ -4,7 +4,7 @@
 
 ---
 
-# Course: Database Advanced – Entity Framework Core
+# Course: C# Web Basics
 
 ## Topics:
 01. Web Server - HTTP Protocol
