@@ -20,5 +20,5 @@ We will look in details at working with a modern ORM technology: Entity Framewor
 10. XML Processing
 
 ## Certificate: 
-none
+<img src="certificate.jpeg"/>
 
