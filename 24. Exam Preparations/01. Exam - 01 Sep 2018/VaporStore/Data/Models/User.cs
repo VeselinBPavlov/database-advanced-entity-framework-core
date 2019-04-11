@@ -1,8 +1,10 @@
-﻿namespace VaporStore.Data.Models
-{
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Text;
 
+namespace VaporStore.Data.Models
+{
     public class User
     {
         [Key]
