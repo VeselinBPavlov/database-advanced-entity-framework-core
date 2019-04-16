@@ -18,6 +18,7 @@ We will look in details at working with a modern ORM technology: Entity Framewor
 08. C# Automapping Objects
 09. JSON Processing
 10. XML Processing
+11. Best Practices and Achitecture
 
 ## Certificate: 
 <img src="certificate.jpeg"/>
